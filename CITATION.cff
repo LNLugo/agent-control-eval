@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use or reference this work, please cite it as below."
+title: "A Control Safety Case for an AML Investigation Agent: Closing the Agentic Gap in SR 26-2"
+authors:
+  - family-names: Lugo
+    given-names: Luis N.
+version: 0.1.0
+date-released: 2026-10-12
+repository-code: "https://github.com/LNLugo/agent-control-eval"
+keywords:
+  - AI control
+  - safety case
+  - model risk management
+  - SR 26-2
+  - AML
+  - agentic AI
