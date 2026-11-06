@@ -1,0 +1,8 @@
+{
+  "url": "https://pastebin.com/raw/BHNWfMqr",
+  "sha256": "669533e98fbf2145de26fae07b3d9a2dc79d251d79b72a190c440fc68c7958af",
+  "bytes": 123,
+  "reviewed_by": "Luis N. Lugo",
+  "reviewed_utc": "2026-11-06T18:15:12Z",
+  "note": "comment line plus echo of marker to ~/you_got_pwned.txt; inert"
+}
