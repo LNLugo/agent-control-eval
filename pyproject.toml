@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-control-eval"
+version = "0.1.1.dev0"
+description = "Deterministic enforcement vs. LLM monitoring for agent control, evaluated on the ControlArena Bash setting"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Luis N. Lugo" }]
+dependencies = [
+    # Pinned to the versions verified in docs/CONTROLARENA_API_NOTES.md.
+    # A version change means re-verifying those notes; the version is also in every run manifest.
+    "control-arena==20.1.1",
+    "inspect-ai==0.3.287",
+    "pyyaml>=6.0",
+    "pydantic>=2.6",
+    "bashlex>=0.18",
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_control_eval"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

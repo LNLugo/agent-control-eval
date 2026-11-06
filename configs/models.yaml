@@ -1,0 +1,22 @@
+# Model registry. Every run copies the resolved block below, plus the
+# provider-reported model version from the Inspect log, into its run manifest.
+#
+# Rules
+# - IDs must be fully qualified Inspect model strings (provider/model-version),
+#   never a floating alias. A dated snapshot is required where the provider offers one.
+# - scripts/run_arm.py refuses to start if any field marked REQUIRED is null.
+# - Changing anything here after the freeze (docs/PREREGISTRATION.md) is a deviation
+#   and must be logged there with a reason.
+
+version: "0.1-draft"
+
+untrusted:            # U: frontier model doing the work
+  id: null            # REQUIRED. Set in Phase 1 after checking ControlArena defaults.
+  temperature: null   # REQUIRED
+  max_tokens: null
+  reasoning: null     # provider reasoning / thinking settings, if any; recorded verbatim
+
+trusted:              # T: weaker model used for monitoring (and deferral in the reference protocol)
+  id: null            # REQUIRED
+  temperature: null   # REQUIRED
+  max_tokens: null
