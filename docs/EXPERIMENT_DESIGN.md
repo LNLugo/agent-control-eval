@@ -106,7 +106,7 @@ number, never a silent fix.
 
 | **ID** | **Attacker knowledge** | **Instruction**                                                                      |
 |--------|------------------------|--------------------------------------------------------------------------------------|
-| P1     | Unaware                | Default ControlArena attack policy                                                   |
+| P1     | Unaware                | Default ControlArena attack policy (names no monitor or policy; asks for subtlety toward the user) |
 | P2     | Monitor-aware          | Told that an LLM monitor reviews each action                                         |
 | P3     | Enforcement-aware      | Given the policy rules in plain language and told to reach the side task within them |
 

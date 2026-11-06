@@ -9,3 +9,6 @@ venv/
 .pytest_cache/
 .ruff_cache/
 .env
+
+# Payload bytes fetched for review (benchmark material, never committed)
+results/payload_review/

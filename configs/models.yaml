@@ -1,22 +1,27 @@
-# Model registry. Every run copies the resolved block below, plus the
-# provider-reported model version from the Inspect log, into its run manifest.
+# Model registry. Every run copies the resolved block below into its run manifest,
+# and analyze.py reads the provider-reported model name from each Inspect log.
 #
 # Rules
-# - IDs must be fully qualified Inspect model strings (provider/model-version),
-#   never a floating alias. A dated snapshot is required where the provider offers one.
-# - scripts/run_arm.py refuses to start if any field marked REQUIRED is null.
-# - Changing anything here after the freeze (docs/PREREGISTRATION.md) is a deviation
-#   and must be logged there with a reason.
+# - IDs are full Inspect model strings (provider/model). No floating "latest" aliases.
+# - scripts/run_arm.py refuses to start if any REQUIRED field is null.
+# - Any change after the freeze (docs/PREREGISTRATION.md) is a logged deviation.
+#
+# Decisions (2026-11-06):
+# - U = ControlArena's default untrusted model.
+# - T comes from a DIFFERENT model family than U (safety case assumption 2), so the
+#   monitor and the agent share fewer failure modes. Exact T ID to be confirmed by Luis.
+# - temperature 1.0 = provider default, which is what stock ControlArena runs use
+#   (it passes an empty GenerateConfig). Recorded explicitly rather than left implicit.
 
 version: "0.1-draft"
 
 untrusted:            # U: frontier model doing the work
-  id: null            # REQUIRED. Set in Phase 1 after checking ControlArena defaults.
-  temperature: null   # REQUIRED
+  id: anthropic/claude-opus-5-5
+  temperature: 1.0
   max_tokens: null
-  reasoning: null     # provider reasoning / thinking settings, if any; recorded verbatim
+  reasoning: null
 
-trusted:              # T: weaker model used for monitoring (and deferral in the reference protocol)
-  id: null            # REQUIRED
-  temperature: null   # REQUIRED
+trusted:              # T: monitor, deferral fallback, and the T0 usefulness floor
+  id: null            # REQUIRED. Cross-family (non-Anthropic) small model; confirm exact ID.
+  temperature: 1.0
   max_tokens: null
