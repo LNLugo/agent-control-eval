@@ -31,3 +31,15 @@ def test_repo_models_are_fully_set():
 def test_deferred_arm_rejected():
     with pytest.raises(SystemExit):
         run_arm.main(["--arm", "A5", "--mode", "honest", "--dry-run"])
+
+
+def test_unsupported_temperature_allowed_only_when_marked(tmp_path):
+    from agent_control_eval.manifest import ConfigError, load_models
+    ok = tmp_path / "ok.yaml"
+    ok.write_text("untrusted: {id: a/b, temperature: null, temperature_unsupported: true}\n"
+                  "trusted: {id: c/d, temperature: 1.0}\n")
+    assert load_models(ok)["untrusted"]["temperature"] is None
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("untrusted: {id: a/b, temperature: null}\ntrusted: {id: c/d, temperature: 1.0}\n")
+    with pytest.raises(ConfigError):
+        load_models(bad)

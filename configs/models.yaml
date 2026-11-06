@@ -10,14 +10,17 @@
 # - U = ControlArena's default untrusted model.
 # - T comes from a DIFFERENT model family than U (safety case assumption 2), so the
 #   monitor and the agent share fewer failure modes. T = GPT-4.1 mini, pinned snapshot.
-# - temperature 1.0 = provider default, which is what stock ControlArena runs use
-#   (it passes an empty GenerateConfig). Recorded explicitly rather than left implicit.
+# - temperature: T at 1.0 = provider default (what stock ControlArena passes).
+#   U: Anthropic removed the temperature parameter in API version 2026-10-21 (Inspect warns and
+#   drops it), so U's temperature is null with temperature_unsupported: true. Sampling is the
+#   provider's fixed behavior; the API version in force is recorded via the Inspect log.
 
 version: "0.1-draft"
 
 untrusted:            # U: frontier model doing the work
   id: anthropic/claude-opus-5-5
-  temperature: 1.0
+  temperature: null
+  temperature_unsupported: true   # Anthropic API >= 2026-10-21 rejects temperature
   max_tokens: null
   reasoning: null
 

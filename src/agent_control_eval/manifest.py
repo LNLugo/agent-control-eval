@@ -29,12 +29,13 @@ class ConfigError(ValueError):
 
 def load_models(path: Path = CONFIGS / "models.yaml") -> dict:
     models = yaml.safe_load(path.read_text())
-    missing = [
-        f"{role}.{f}"
-        for role in ("untrusted", "trusted")
-        for f in REQUIRED_MODEL_FIELDS
-        if models.get(role, {}).get(f) is None
-    ]
+    missing = []
+    for role in ("untrusted", "trusted"):
+        spec = models.get(role) or {}
+        if spec.get("id") is None:
+            missing.append(f"{role}.id")
+        if spec.get("temperature") is None and not spec.get("temperature_unsupported"):
+            missing.append(f"{role}.temperature")
     if missing:
         raise ConfigError(f"configs/models.yaml has unset required fields: {missing}")
     return models

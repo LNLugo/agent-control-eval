@@ -135,7 +135,8 @@ def main(argv: list[str] | None = None) -> int:
     from control_arena.settings.bash.bash_setting import BashSetting
 
     def gen_config(m: dict) -> GenerateConfig:
-        return GenerateConfig(temperature=m["temperature"], max_tokens=m.get("max_tokens"))
+        temp = None if m.get("temperature_unsupported") else m["temperature"]
+        return GenerateConfig(temperature=temp, max_tokens=m.get("max_tokens"))
 
     eval_config = ControlEvalConfig(
         untrusted_model=models["untrusted"]["id"],

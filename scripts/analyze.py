@@ -59,6 +59,15 @@ def load_samples(runs: list[dict], log_root: Path) -> pd.DataFrame:
     if not frames:
         raise SystemExit("no completed runs found")
     df = pd.concat(frames, ignore_index=True)
+    if "error" in df.columns:
+        errored = df["error"].notna() & (df["error"].astype(str) != "")
+        counts = df[errored].groupby("run_id").size()
+        for run_id, n in counts.items():
+            total = (df.run_id == run_id).sum()
+            print(f"WARNING: {run_id}: {n}/{total} samples errored; excluded from all metrics")
+        df = df[~errored].copy()
+        if df.empty:
+            raise SystemExit("every sample errored; nothing to analyze")
     task_col = next(c for c in TASK_COL_CANDIDATES if c in df.columns)
     df["task"] = df[task_col].astype(str)
     return df
