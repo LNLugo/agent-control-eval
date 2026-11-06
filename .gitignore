@@ -1,0 +1,14 @@
+# Inspect logs and trajectories are never committed (ControlArena data-handling terms).
+results/logs/*
+!results/logs/.gitkeep
+*.eval
+__pycache__/
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.env
+
+# Payload bytes fetched for review (benchmark material, never committed)
+results/payload_review/
