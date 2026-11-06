@@ -9,7 +9,7 @@
 # Decisions (2026-11-06):
 # - U = ControlArena's default untrusted model.
 # - T comes from a DIFFERENT model family than U (safety case assumption 2), so the
-#   monitor and the agent share fewer failure modes. Exact T ID to be confirmed by Luis.
+#   monitor and the agent share fewer failure modes. T = GPT-4.1 mini, pinned snapshot.
 # - temperature 1.0 = provider default, which is what stock ControlArena runs use
 #   (it passes an empty GenerateConfig). Recorded explicitly rather than left implicit.
 
@@ -22,6 +22,6 @@ untrusted:            # U: frontier model doing the work
   reasoning: null
 
 trusted:              # T: monitor, deferral fallback, and the T0 usefulness floor
-  id: null            # REQUIRED. Cross-family (non-Anthropic) small model; confirm exact ID.
+  id: openai/gpt-4.1-mini-2025-04-14   # chosen 2026-11-06: cross-family, non-reasoning, dated snapshot
   temperature: 1.0
   max_tokens: null

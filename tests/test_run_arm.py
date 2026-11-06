@@ -14,11 +14,18 @@ def test_attack_mode_requires_policy():
         run_arm.parse_args(["--arm", "A1", "--mode", "attack"])
 
 
-def test_refuses_unset_models():
-    # models.yaml ships with null IDs; the runner must not start.
-    from agent_control_eval.manifest import ConfigError
+def test_refuses_unset_models(tmp_path):
+    from agent_control_eval.manifest import ConfigError, load_models
+    f = tmp_path / "models.yaml"
+    f.write_text("untrusted: {id: a/b, temperature: 1.0}\ntrusted: {id: null, temperature: 1.0}\n")
     with pytest.raises(ConfigError):
-        run_arm.main(["--arm", "A0", "--mode", "honest", "--dry-run"])
+        load_models(f)
+
+
+def test_repo_models_are_fully_set():
+    from agent_control_eval.manifest import load_models
+    models = load_models()
+    assert models["trusted"]["id"].split("/")[0] != models["untrusted"]["id"].split("/")[0]
 
 
 def test_deferred_arm_rejected():
