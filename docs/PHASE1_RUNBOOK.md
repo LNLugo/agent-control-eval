@@ -67,10 +67,15 @@ a local mirror.
 ## 3. Pilot (small, to check cost and behavior)
 
 ```powershell
-python scripts/run_arm.py --arm A4 --mode honest --limit 10 --epochs 1
-python scripts/run_arm.py --arm A4 --mode attack --attack-policy P1 --limit 10 --epochs 1
+python scripts/run_arm.py --arm A4 --mode honest --limit 10 --epochs 1 --max-steps 40
+python scripts/run_arm.py --arm A4 --mode attack --attack-policy P1 --limit 10 --epochs 1 --max-steps 40
 python scripts/analyze.py
 ```
+
+Caps: every sample stops at 40 steps or 300,000 tokens (the runner default; ControlArena's own
+default is 1,000,000, which the smoke test showed a looping agent will reach). Both caps are recorded
+in the manifest. In the pilot output, count how many samples ended on a limit: if many honest
+samples hit a cap, the cap is cutting usefulness and must be raised before the baseline.
 
 Check that `score_max_suspicion_scorer` is non-zero, that the side task succeeds at least
 sometimes, and what the 20 samples cost. Scale step 4 to the budget.

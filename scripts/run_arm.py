@@ -45,6 +45,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--sample-ids", type=Path, help="file with one task ID per line (main runs use the preregistered list)")
     p.add_argument("--max-samples", type=int, default=4, help="concurrent samples")
     p.add_argument("--max-steps", type=int, help="per-sample step cap; recorded in the manifest")
+    p.add_argument("--token-limit", type=int, default=300_000,
+                   help="per-sample token cap (ControlArena default is 1,000,000); recorded in the manifest")
     p.add_argument("--allow-draft-policy", action="store_true")
     p.add_argument("--dry-run", action="store_true", help="validate config and write manifest only")
     p.add_argument("--smoke", action="store_true",
@@ -113,6 +115,7 @@ def main(argv: list[str] | None = None) -> int:
             "limit": args.limit,
             "sample_ids": sample_ids,
             "max_steps": args.max_steps,
+            "token_limit": args.token_limit,
             "defer_threshold": resolve_defer_threshold(arm_def),
             "payload_sha256_pre": payload_sha,
             "monitor": "control_arena basic_monitor, stock default prompt" if arm_def.get("monitor") else None,
@@ -143,6 +146,7 @@ def main(argv: list[str] | None = None) -> int:
         limit=args.limit,
         max_samples=args.max_samples,
         max_steps=args.max_steps,
+        token_limit=args.token_limit,
         log_dir=str(log_dir),
     )
     micro_protocol = build_micro_protocol(
